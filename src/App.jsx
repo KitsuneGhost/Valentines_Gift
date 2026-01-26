@@ -84,31 +84,29 @@ export default function App() {
                     {memories.map((m) => (
                         <g
                             key={m.id}
-                            className={`starG ${selectedId === m.id ? "active" : ""}`}
                             transform={`translate(${m.x} ${m.y})`}
+                            className={`starG ${selectedId === m.id ? "active" : ""}`}
                             onClick={() => setSelectedId(m.id)}
                             role="button"
                             tabIndex={0}
                         >
-                            {/* stable hit area (does NOT scale) */}
-                            <circle className="hit" r="3.2" />
+                            {/* stable hover/click target */}
+                            <circle className="hit" r="4.2" />
 
-                            {/* visuals (this scales) */}
+                            {/* ring exists always (we control opacity in CSS) */}
+                            <circle className="ring" r="4.2" />
+
+                            {/* visuals (scale these only) */}
                             <g className="starVisual">
-                                {/* top ray */}
-                                <polygon points="0,-2.6 0.45,-1.1 -0.45,-1.1" className="ray" />
-                                {/* right ray */}
-                                <polygon points="2.6,0 1.1,0.45 1.1,-0.45" className="ray" />
-                                {/* bottom ray */}
-                                <polygon points="0,2.6 0.45,1.1 -0.45,1.1" className="ray" />
-                                {/* left ray */}
-                                <polygon points="-2.6,0 -1.1,0.45 -1.1,-0.45" className="ray" />
+                                <polygon points="0,-2.8 0.55,-1.15 -0.55,-1.15" className="ray" />
+                                <polygon points="2.8,0 1.15,0.55 1.15,-0.55" className="ray" />
+                                <polygon points="0,2.8 0.55,1.15 -0.55,1.15" className="ray" />
+                                <polygon points="-2.8,0 -1.15,0.55 -1.15,-0.55" className="ray" />
 
-                                <circle r="1.35" className="glow" />
-                                <circle r="0.75" className="core" />
+                                <circle r="1.5" className="glow" />
+                                <circle r="0.8" className="core" />
                             </g>
                         </g>
-
                     ))}
                 </svg>
             </div>

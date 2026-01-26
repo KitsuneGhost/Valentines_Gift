@@ -70,6 +70,7 @@
 
 .starG { cursor: pointer; }
 
+/* invisible stable hit area */
 .hit {
   fill: transparent !important;
   stroke: transparent !important;
@@ -78,28 +79,68 @@
   cursor: pointer;
 }
 
+/* the ring must NOT steal hover/click */
+.ring {
+  pointer-events: none;
+  fill: transparent;
+  stroke: rgba(255,255,255,0.32);
+  stroke-width: 0.35;
+  opacity: 0;
+  transition: opacity 0.18s ease, stroke 0.18s ease, filter 0.18s ease;
+  filter: drop-shadow(0 0 10px rgba(255, 170, 220, 0.18));
+}
+
+/* show ring on hover of hit circle */
+.hit:hover ~ .ring {
+  opacity: 1;
+}
+
+/* keep ring visible (stronger) when selected */
+.starG.active .ring {
+  opacity: 1;
+  stroke: rgba(255,255,255,0.55);
+  filter: drop-shadow(0 0 14px rgba(255, 150, 220, 0.28));
+}
+
+/* visuals scale on hover of hit circle (NO flicker) */
 .starVisual {
   transform-origin: center;
   transform-box: fill-box;
   transition: transform 0.22s ease, filter 0.22s ease;
 }
 
-.hit:hover + .starVisual {
+.hit:hover + .ring + .starVisual {
   transform: scale(1.18);
   filter: drop-shadow(0 0 16px rgba(255,255,255,0.35));
 }
 
+/* rays/core look */
 .ray {
   fill: rgba(255, 255, 255, 0.65);
   filter: drop-shadow(0 0 6px rgba(255,255,255,0.22));
 }
 
+/* Prevent browser weird focus highlight on SVG groups */
+.starG:focus,
+.starG:focus-visible {
+  outline: none;
+}
+
+/* Some browsers draw focus around the entire SVG element; this helps */
+.skySvg *:focus {
+  outline: none;
+}
+
+/* when focused via keyboard, show the ring */
+.starG:focus-visible .ring {
+  opacity: 1;
+  stroke: rgba(255,255,255,0.6);
+  filter: drop-shadow(0 0 14px rgba(255, 150, 220, 0.3));
+}
+
+
 .glow { fill: rgba(255,255,255,0.14); }
 .core { fill: rgba(255,255,255,0.95); }
-
-.starG.active .ray { fill: rgba(255,255,255,0.9); }
-.starG.active .starVisual { filter: drop-shadow(0 0 22px rgba(255,150,220,0.32)); }
-
 
 .h2 { margin: 0 0 6px; font-size: 26px; letter-spacing: -0.3px; }
 .letterSection { margin: 28px 0 18px; }
@@ -151,70 +192,4 @@
 
 .btn.ghost {
   background: rgba(255,255,255,0.06);
-}
-
-@keyframes twinkle {
-  0%, 100% { opacity: 0.65; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.15); }
-}
-
-.ray {
-  fill: rgba(255, 255, 255, 0.65);
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.25));
-}
-
-.glow {
-  fill: rgba(255,255,255,0.14);
-}
-
-.core {
-  fill: rgba(255,255,255,0.95);
-}
-
-.starG {
-  cursor: pointer;
-  transition: transform 0.25s ease, filter 0.25s ease;
-}
-
-.starG.active .ray {
-  fill: rgba(255,255,255,0.9);
-}
-
-.starG.active {
-  filter: drop-shadow(0 0 22px rgba(255, 150, 220, 0.3));
-}
-
-/* stable hit area */
-.hit {
-  fill: transparent;
-  pointer-events: all; /* important */
-}
-
-.starG:hover .starVisual {
-  transform: scale(1.18);
-  filter: drop-shadow(0 0 16px rgba(255,255,255,0.35));
-}
-
-.ray {
-  fill: rgba(255, 255, 255, 0.65);
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.25));
-}
-
-.glow { fill: rgba(255,255,255,0.14); }
-.core { fill: rgba(255,255,255,0.95); }
-
-.starG.active .ray { fill: rgba(255,255,255,0.9); }
-.starG.active .starVisual { filter: drop-shadow(0 0 22px rgba(255,150,220,0.32)); }
-
-.hit {
-  fill: transparent !important;
-  stroke: transparent !important;
-  opacity: 0 !important;
-  pointer-events: all;
-  cursor: pointer;
-}
-
-.hit:hover + .starVisual {
-  transform: scale(1.18);
-  filter: drop-shadow(0 0 16px rgba(255,255,255,0.35));
 }
