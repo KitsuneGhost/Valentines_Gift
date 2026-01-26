@@ -122,9 +122,8 @@ export default function App() {
                             onClick={() => !traceMode && setSelectedId(m.id)}
                         >
                             <circle className="hit" r="4.2" />
-                            {m.type === "anchor" && (
-                                <circle className="ring" r="3.2" />
-                            )}
+                            {m.type === "anchor" && <circle className="halo" r="5" />}
+                            {m.type === "anchor" && <circle className="ring" r="3.2" />}
                             <g className="starVisual">
                                 <polygon
                                     points="0,-2.8 0.6,-1.1 -0.6,-1.1"
