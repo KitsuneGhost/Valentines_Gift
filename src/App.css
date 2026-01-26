@@ -40,3 +40,100 @@
 .read-the-docs {
   color: #888;
 }
+
+.sky {
+  position: relative;
+  margin-top: 30px;
+  height: 70vh;
+
+  border-radius: 24px;
+  overflow: hidden;
+
+  background:
+          radial-gradient(800px 500px at 15% 25%, rgba(255, 80, 170, 0.14), transparent 55%),
+          radial-gradient(900px 600px at 80% 20%, rgba(120, 180, 255, 0.12), transparent 60%),
+          radial-gradient(1100px 700px at 50% 75%, rgba(200, 120, 255, 0.08), transparent 60%),
+          #070712;
+
+  box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.star {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  border: 0;
+  cursor: pointer;
+
+  background: rgba(255,255,255,0.95);
+  box-shadow:
+          0 0 10px rgba(255,255,255,0.55),
+          0 0 22px rgba(160, 200, 255, 0.20);
+}
+
+.lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.line {
+  stroke: rgba(255,255,255,0.18);
+  stroke-width: 0.35;
+}
+
+.h2 { margin: 0 0 6px; font-size: 26px; letter-spacing: -0.3px; }
+.letterSection { margin: 28px 0 18px; }
+
+.letterCard {
+  margin-top: 14px;
+  border-radius: 22px;
+  padding: 18px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  box-shadow: 0 20px 80px rgba(0,0,0,0.55);
+}
+
+.letterText {
+  white-space: pre-wrap; /* keeps \n new lines */
+  line-height: 1.7;
+  font-size: 16px;
+  color: rgba(255,255,255,0.9);
+  min-height: 180px;
+}
+
+.cursor {
+  display: inline-block;
+  margin-left: 2px;
+  opacity: 0.85;
+  animation: blink 0.9s infinite;
+}
+
+@keyframes blink {
+  0%, 49% { opacity: 0.2; }
+  50%, 100% { opacity: 1; }
+}
+
+.letterControls {
+  display: flex;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: 1px solid rgba(255,255,255,0.14);
+  background: rgba(255,255,255,0.10);
+  color: white;
+  padding: 10px 12px;
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.btn.ghost {
+  background: rgba(255,255,255,0.06);
+}
