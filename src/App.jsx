@@ -90,15 +90,25 @@ export default function App() {
                             role="button"
                             tabIndex={0}
                         >
-                            {/* spikes (a cross) */}
-                            <line x1={-2.1} y1={0} x2={2.1} y2={0} className="spike" />
-                            <line x1={0} y1={-2.1} x2={0} y2={2.1} className="spike" />
+                            {/* stable hit area (does NOT scale) */}
+                            <circle className="hit" r="3.2" />
 
-                            {/* glow */}
-                            <circle r="1.35" className="glow" />
-                            {/* bright core */}
-                            <circle r="0.75" className="core" />
+                            {/* visuals (this scales) */}
+                            <g className="starVisual">
+                                {/* top ray */}
+                                <polygon points="0,-2.6 0.45,-1.1 -0.45,-1.1" className="ray" />
+                                {/* right ray */}
+                                <polygon points="2.6,0 1.1,0.45 1.1,-0.45" className="ray" />
+                                {/* bottom ray */}
+                                <polygon points="0,2.6 0.45,1.1 -0.45,1.1" className="ray" />
+                                {/* left ray */}
+                                <polygon points="-2.6,0 -1.1,0.45 -1.1,-0.45" className="ray" />
+
+                                <circle r="1.35" className="glow" />
+                                <circle r="0.75" className="core" />
+                            </g>
                         </g>
+
                     ))}
                 </svg>
             </div>
