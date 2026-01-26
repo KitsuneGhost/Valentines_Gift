@@ -28,14 +28,34 @@ export default function App() {
     // Natural-looking random starfield (no grid)
     const bgStars = useMemo(() => {
         const rand = (min, max) => min + Math.random() * (max - min);
-        return Array.from({ length: 140 }).map((_, i) => ({
-            id: i,
-            x: rand(2, 98),
-            y: rand(2, 98),
-            r: rand(0.08, 0.22),
-            a: rand(0.12, 0.45),
+
+        const tiny = Array.from({ length: 220 }).map((_, i) => ({
+            id: `t-${i}`,
+            x: rand(0, 100),
+            y: rand(0, 100),
+            r: rand(0.05, 0.12),
+            a: rand(0.08, 0.18),
         }));
+
+        const small = Array.from({ length: 120 }).map((_, i) => ({
+            id: `s-${i}`,
+            x: rand(0, 100),
+            y: rand(0, 100),
+            r: rand(0.12, 0.22),
+            a: rand(0.15, 0.35),
+        }));
+
+        const rare = Array.from({ length: 18 }).map((_, i) => ({
+            id: `r-${i}`,
+            x: rand(0, 100),
+            y: rand(0, 100),
+            r: rand(0.25, 0.4),
+            a: rand(0.25, 0.5),
+        }));
+
+        return [...tiny, ...small, ...rare];
     }, []);
+
 
     const byId = useMemo(() => {
         const m = new Map();
