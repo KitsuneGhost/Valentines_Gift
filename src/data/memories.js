@@ -1,20 +1,18 @@
 export const virgoStars = [
     // LEFT ARM (long, slightly angled)
-    { id: 1, title: "Left tip", date: "—", note: "Memory", x: 12, y: 44 },
-    { id: 2, title: "Left mid", date: "—", note: "Memory", x: 26, y: 42 },
+    { id: 1, title: "Left tip", date: "—", note: "Memory", x: 25, y: 47 },
+    { id: 2, title: "Left mid", date: "—", note: "Memory", x: 36, y: 46.5 },
 
-    // CENTRAL HUB
-    { id: 3, title: "Center", date: "—", note: "Memory", x: 42, y: 44 },
-
-    // TOP SPIKE (vertical)
-    { id: 4, title: "Top", date: "—", note: "Memory", x: 42, y: 24 },
+    // TOP SIDE OF RECTANGLE
+    { id: 3, title: "Center", date: "—", note: "Memory", x: 43, y: 50 },
+    { id: 4, title: "Top", date: "—", note: "Memory", x: 55, y: 43 },
 
     // RIGHT ARM (longer + more horizontal)
-    { id: 5, title: "Right mid", date: "—", note: "Memory", x: 60, y: 40 },
-    { id: 6, title: "Right tip", date: "—", note: "Memory", x: 78, y: 34 },
+    { id: 5, title: "Right mid", date: "—", note: "Memory", x: 53, y: 30.5 },
+    { id: 6, title: "Right tip", date: "—", note: "Memory", x: 61, y: 48 },
 
-    // LOWER CONNECTOR (diagonal down)
-    { id: 7, title: "Lower mid", date: "—", note: "Memory", x: 36, y: 60 },
+    // LOWER LINE OF RECTANGLE
+    { id: 7, title: "Lower mid", date: "—", note: "Memory", x: 51, y: 57.5 },
 
     // SPICA (anchor, clearly separated)
     {
@@ -22,30 +20,41 @@ export const virgoStars = [
         title: "Spica",
         date: "—",
         note: "Your anchor memory",
-        x: 30,
-        y: 78,
+        x: 47,
+        y: 62.5,
         type: "anchor",
     },
 
-    // LEFT TAIL (small zig-zag)
-    { id: 9, title: "Tail 1", date: "—", note: "Memory", x: 18, y: 56 },
-    { id: 10, title: "Tail 2", date: "—", note: "Memory", x: 24, y: 58 },
+    // RIGHT ARM
+    { id: 9, title: "Tail 1", date: "—", note: "Memory", x: 70, y: 46.5 },
+    { id: 10, title: "Tail 2", date: "—", note: "Memory", x: 78, y: 40 },
+
+    // LEFT ZIGZAG ARM
+    { id: 11, title: "Tail 2", date: "—", note: "Memory", x: 31.5, y: 61.7 },
+    { id: 12, title: "Tail 2", date: "—", note: "Memory", x: 30, y: 57 },
+    { id: 13, title: "Tail 2", date: "—", note: "Memory", x: 23, y: 57 },
 ];
 
 export const virgoLinks = [
-    [1, 2],
+    [1, 2],       // left bottom arm
     [2, 3],
 
-    [3, 4],       // top spike
-    [3, 5],
-    [5, 6],       // right arm
+    [3, 4],       // top side of rectangle
+    [4, 5],
 
-    [3, 7],
-    [7, 8],       // Spica stem
+    [4, 6],       // right side of retangle
 
-    [1, 9],
+    [6, 7],       // lower side of rectangle
+    [7, 8],
+
+    [3, 8],       // left side of the rectangle
+
+    [6, 9],       // right arm
     [9, 10],
-    [10, 2],      // left tail
+
+    [8, 11],        // left zigzag
+    [11, 12],
+    [12, 13]
 ];
 
 export const virgoSupportStars = [
