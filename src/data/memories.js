@@ -1,20 +1,45 @@
-export const memories = [
-    { id: 1, title: "The first time I knew", date: "—", note: "…", x: 18, y: 30 },
-    { id: 2, title: "My favorite moment with you", date: "—", note: "…", x: 62, y: 25 },
-    { id: 3, title: "What you changed in me", date: "—", note: "…", x: 40, y: 70 },
-    { id: 4, title: "What I protect in you", date: "—", note: "…", x: 78, y: 62 },
+export const virgoStars = [
+    // LEFT ARM (horizontal)
+    { id: 1, title: "Left 1", x: 18, y: 42 },
+    { id: 2, title: "Left 2", x: 30, y: 40 },
+
+    // CENTRAL HUB (junction)
+    { id: 3, title: "Hub", x: 44, y: 42 },
+
+    // TOP SPIKE
+    { id: 4, title: "Top", x: 44, y: 26 },
+
+    // RIGHT ARM
+    { id: 5, title: "Right mid", x: 60, y: 40 },
+    { id: 6, title: "Far right", x: 76, y: 34 },
+
+    // LOWER CONNECTOR (diagonal down-left)
+    { id: 7, title: "Lower mid", x: 38, y: 58 },
+
+    // SPICA (anchor, bottom-left-ish)
+    { id: 8, title: "Spica", x: 30, y: 72, type: "anchor" },
+
+    // LEFT TAIL (small zigzag)
+    { id: 9, title: "Tail 1", x: 22, y: 54 },
+    { id: 10, title: "Tail 2", x: 28, y: 56 },
 ];
 
-export const links = [
-    [1, 3],
-    [3, 2],
-    [2, 4],
-];
+export const virgoLinks = [
+    // left arm
+    [1, 2],
+    [2, 3],
 
-export const supportStars = [
-    { id: "s1", x: 30, y: 18 },
-    { id: "s2", x: 54, y: 40 },
-    { id: "s3", x: 72, y: 32 },
-    { id: "s4", x: 65, y: 78 },
-    { id: "s5", x: 22, y: 62 },
+    // hub structure
+    [3, 4], // up
+    [3, 5], // right
+    [5, 6],
+
+    // down to Spica
+    [3, 7],
+    [7, 8],
+
+    // left tail
+    [1, 9],
+    [9, 10],
+    [10, 2],
 ];

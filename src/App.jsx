@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { memories, links, supportStars } from "./data/memories";
+import { virgoStars, virgoLinks, virgoSupportStars } from "./data/memories";
 import "./App.css";
 import TypedLetter from "./components/TypedLetter.jsx";
 
@@ -21,7 +21,7 @@ export default function App() {
     const [selectedId, setSelectedId] = useState(null);
 
     const selected = useMemo(
-        () => memories.find((m) => m.id === selectedId),
+        () => virgoStars.find((m) => m.id === selectedId),
         [selectedId]
     );
 
@@ -56,13 +56,6 @@ export default function App() {
         return [...tiny, ...small, ...rare];
     }, []);
 
-
-    const byId = useMemo(() => {
-        const m = new Map();
-        memories.forEach((s) => m.set(s.id, s));
-        return m;
-    }, []);
-
     return (
         <div className="page">
             <header className="hero">
@@ -74,13 +67,9 @@ export default function App() {
                 <svg className="skySvg" viewBox="0 0 100 100" preserveAspectRatio="none">
 
                     {/* support stars */}
-                    {supportStars.map((s) => (
+                    {virgoSupportStars.map((s) => (
                         <g key={s.id} transform={`translate(${s.x} ${s.y})`} className="supportStar">
-                            <polygon points="0,-2.2 0.45,-0.9 -0.45,-0.9" className="supportRay" />
-                            <polygon points="2.2,0 0.9,0.45 0.9,-0.45" className="supportRay" />
-                            <polygon points="0,2.2 0.45,0.9 -0.45,0.9" className="supportRay" />
-                            <polygon points="-2.2,0 -0.9,0.45 -0.9,-0.45" className="supportRay" />
-                            <circle r="0.65" className="supportCore" />
+                            <circle r="0.5" className="supportCore" />
                         </g>
                     ))}
 
@@ -96,10 +85,9 @@ export default function App() {
                     ))}
 
                     {/* constellation lines */}
-                    {links.map(([a, b]) => {
-                        const A = byId.get(a);
-                        const B = byId.get(b);
-                        if (!A || !B) return null;
+                    {virgoLinks.map(([a, b]) => {
+                        const A = virgoStars.find(s => s.id === a);
+                        const B = virgoStars.find(s => s.id === b);
                         return (
                             <line
                                 key={`${a}-${b}`}
@@ -112,31 +100,33 @@ export default function App() {
                         );
                     })}
 
+
                     {/* constellation stars (4 spikes + core) */}
-                    {memories.map((m) => (
+                    {virgoStars.map((m) => (
                         <g
                             key={m.id}
                             transform={`translate(${m.x} ${m.y})`}
-                            className={`starG ${selectedId === m.id ? "active" : ""}`}
+                            className={`starG ${m.type === "anchor" ? "anchor" : ""} ${selectedId === m.id ? "active" : ""}`}
                             onClick={() => setSelectedId(m.id)}
-                            role="button"
-                            tabIndex={0}
                         >
                             {/* stable hover/click target */}
                             <circle className="hit" r="4.2" />
 
                             {/* ring exists always (we control opacity in CSS) */}
-                            <circle className="ring" r="4.2" />
+                            <circle className="ring" r={m.type === "anchor" ? 3.9 : 4.2} />
 
                             {/* visuals (scale these only) */}
                             <g className="starVisual">
+                                {m.type === "anchor" && <circle r="2.4" className="halo" />}
+
                                 <polygon points="0,-2.8 0.55,-1.15 -0.55,-1.15" className="ray" />
                                 <polygon points="2.8,0 1.15,0.55 1.15,-0.55" className="ray" />
                                 <polygon points="0,2.8 0.55,1.15 -0.55,1.15" className="ray" />
                                 <polygon points="-2.8,0 -1.15,0.55 -1.15,-0.55" className="ray" />
 
-                                <circle r="1.5" className="glow" />
-                                <circle r="0.8" className="core" />
+                                <circle r={m.type === "anchor" ? 1.05 : 1.5} className="glow" />
+                                <circle r={m.type === "anchor" ? 0.95 : 0.8} className="core" />
+
                             </g>
                         </g>
                     ))}
@@ -146,7 +136,7 @@ export default function App() {
             <Modal
                 open={selectedId !== null}
                 onClose={() => setSelectedId(null)}
-                memory={selected || memories[0]}
+                memory={selected || virgoStars[0]}
             />
 
             <section className="letterSection">

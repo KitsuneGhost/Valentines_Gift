@@ -143,13 +143,67 @@
   filter: drop-shadow(0 0 4px rgba(255,255,255,0.10));
 }
 
-.supportCore {
-  fill: rgba(255,255,255,0.55);
+.starG.anchor .ray {
+  fill: rgba(255,255,255,0.85);
 }
 
+.starG.anchor {
+  filter: drop-shadow(0 0 26px rgba(255, 200, 230, 0.45));
+}
+
+.supportCore {
+  fill: rgba(255,255,255,0.25);
+}
 
 .glow { fill: rgba(255,255,255,0.14); }
 .core { fill: rgba(255,255,255,0.95); }
+
+/* Disable ring everywhere by default */
+.hit:hover ~ .ring { opacity: 0; }
+
+/* Don't show ring for selected non-anchor stars */
+.starG.active .ring { opacity: 0; }
+
+/* Ring only for Spica (anchor) */
+.starG.anchor .ring {
+  opacity: 1;
+  stroke: rgba(255,255,255,0.38);
+  stroke-width: 0.26;
+  filter: drop-shadow(0 0 16px rgba(255, 170, 220, 0.22));
+}
+
+.starG:focus-visible .ring { opacity: 0; }
+.starG.anchor:focus-visible .ring { opacity: 1; }
+
+/* soft halo for Spica */
+.halo {
+  fill: rgba(255, 180, 220, 0.10);
+  filter: blur(0.2px) drop-shadow(0 0 22px rgba(255, 150, 220, 0.22));
+}
+
+/* Make Spica rays a bit longer + cleaner */
+.starG.anchor .ray {
+  fill: rgba(255,255,255,0.88);
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.22));
+}
+
+/* Stronger core + slightly brighter glow for Spica */
+.starG.anchor .core { fill: rgba(255,255,255,1); }
+.starG.anchor .glow { fill: rgba(255,255,255,0.18); }
+
+.starG.anchor .starVisual .ray {
+  transform-origin: center;
+  transform-box: fill-box;
+  transform: scale(1.18);
+}
+
+.starG.anchor .core { fill: rgba(255,255,255,1); }
+.starG.anchor .glow { fill: rgba(255,255,255,0.20); }
+.starG.anchor { filter: drop-shadow(0 0 28px rgba(255, 160, 220, 0.35)); }
+
+
+
+
 
 .h2 { margin: 0 0 6px; font-size: 26px; letter-spacing: -0.3px; }
 .letterSection { margin: 28px 0 18px; }
