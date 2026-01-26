@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { memories, links } from "./data/memories";
-import TypedLetter from "./components/TypedLetter";
 import "./App.css";
+import TypedLetter from "./components/TypedLetter.jsx";
 
 function Modal({ open, onClose, memory }) {
     if (!open) return null;
@@ -17,10 +17,6 @@ function Modal({ open, onClose, memory }) {
     );
 }
 
-function getById(id) {
-    return memories.find((m) => m.id === id);
-}
-
 export default function App() {
     const [selectedId, setSelectedId] = useState(null);
 
@@ -28,6 +24,24 @@ export default function App() {
         () => memories.find((m) => m.id === selectedId),
         [selectedId]
     );
+
+    // Natural-looking random starfield (no grid)
+    const bgStars = useMemo(() => {
+        const rand = (min, max) => min + Math.random() * (max - min);
+        return Array.from({ length: 140 }).map((_, i) => ({
+            id: i,
+            x: rand(2, 98),
+            y: rand(2, 98),
+            r: rand(0.08, 0.22),
+            a: rand(0.12, 0.45),
+        }));
+    }, []);
+
+    const byId = useMemo(() => {
+        const m = new Map();
+        memories.forEach((s) => m.set(s.id, s));
+        return m;
+    }, []);
 
     return (
         <div className="page">
@@ -37,13 +51,23 @@ export default function App() {
             </header>
 
             <div className="sky">
-                {/* SVG lines (behind stars) */}
-                <svg className="lines" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    {links.map(([a, b]) => {
-                        const A = getById(a);
-                        const B = getById(b);
-                        if (!A || !B) return null;
+                <svg className="skySvg" viewBox="0 0 100 100" preserveAspectRatio="none">
+                    {/* background random stars */}
+                    {bgStars.map((s) => (
+                        <circle
+                            key={s.id}
+                            cx={s.x}
+                            cy={s.y}
+                            r={s.r}
+                            fill={`rgba(255,255,255,${s.a})`}
+                        />
+                    ))}
 
+                    {/* constellation lines */}
+                    {links.map(([a, b]) => {
+                        const A = byId.get(a);
+                        const B = byId.get(b);
+                        if (!A || !B) return null;
                         return (
                             <line
                                 key={`${a}-${b}`}
@@ -55,18 +79,28 @@ export default function App() {
                             />
                         );
                     })}
-                </svg>
 
-                {/* stars */}
-                {memories.map((m) => (
-                    <button
-                        key={m.id}
-                        className={`star ${selectedId === m.id ? "active" : ""}`}
-                        style={{ left: `${m.x}%`, top: `${m.y}%` }}
-                        onClick={() => setSelectedId(m.id)}
-                        aria-label={m.title}
-                    />
-                ))}
+                    {/* constellation stars (4 spikes + core) */}
+                    {memories.map((m) => (
+                        <g
+                            key={m.id}
+                            className={`starG ${selectedId === m.id ? "active" : ""}`}
+                            transform={`translate(${m.x} ${m.y})`}
+                            onClick={() => setSelectedId(m.id)}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {/* spikes (a cross) */}
+                            <line x1={-2.1} y1={0} x2={2.1} y2={0} className="spike" />
+                            <line x1={0} y1={-2.1} x2={0} y2={2.1} className="spike" />
+
+                            {/* glow */}
+                            <circle r="1.35" className="glow" />
+                            {/* bright core */}
+                            <circle r="0.75" className="core" />
+                        </g>
+                    ))}
+                </svg>
             </div>
 
             <Modal
