@@ -8,10 +8,12 @@ function Modal({ open, onClose, memory }) {
     return (
         <div className="overlay" onClick={onClose}>
             <div className="modal" onClick={(e) => e.stopPropagation()}>
-                <button className="x" onClick={onClose}>✕</button>
-                <h2>{memory.title}</h2>
-                <p className="muted">{memory.date}</p>
-                <p className="note">{memory.note}</p>
+                <button className="x" onClick={onClose}>
+                    ✕
+                </button>
+                <h2>{memory?.title ?? "—"}</h2>
+                <p className="muted">{memory?.date ?? "—"}</p>
+                <p className="note">{memory?.note ?? ""}</p>
             </div>
         </div>
     );
@@ -25,7 +27,14 @@ export default function App() {
         [selectedId]
     );
 
-    // Natural-looking random starfield (no grid)
+    // Map id -> star (prevents O(n) finds and avoids crashes)
+    const starById = useMemo(() => {
+        const map = new Map();
+        virgoStars.forEach((s) => map.set(s.id, s));
+        return map;
+    }, []);
+
+    // Natural-looking random starfield
     const bgStars = useMemo(() => {
         const rand = (min, max) => min + Math.random() * (max - min);
 
@@ -49,8 +58,8 @@ export default function App() {
             id: `r-${i}`,
             x: rand(0, 100),
             y: rand(0, 100),
-            r: rand(0.25, 0.4),
-            a: rand(0.25, 0.5),
+            r: rand(0.25, 0.42),
+            a: rand(0.25, 0.55),
         }));
 
         return [...tiny, ...small, ...rare];
@@ -64,15 +73,7 @@ export default function App() {
             </header>
 
             <div className="sky">
-                <svg className="skySvg" viewBox="0 0 100 100" preserveAspectRatio="none">
-
-                    {/* support stars */}
-                    {virgoSupportStars.map((s) => (
-                        <g key={s.id} transform={`translate(${s.x} ${s.y})`} className="supportStar">
-                            <circle r="0.5" className="supportCore" />
-                        </g>
-                    ))}
-
+                <svg className="skySvg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet">
                     {/* background random stars */}
                     {bgStars.map((s) => (
                         <circle
@@ -84,10 +85,18 @@ export default function App() {
                         />
                     ))}
 
-                    {/* constellation lines */}
+                    {/* support stars */}
+                    {(virgoSupportStars ?? []).map((s) => (
+                        <g key={s.id} transform={`translate(${s.x} ${s.y})`} className="supportStar">
+                            <circle r="0.5" className="supportCore" />
+                        </g>
+                    ))}
+
+                    {/* constellation lines (SAFE: cannot crash) */}
                     {virgoLinks.map(([a, b]) => {
-                        const A = virgoStars.find(s => s.id === a);
-                        const B = virgoStars.find(s => s.id === b);
+                        const A = starById.get(a);
+                        const B = starById.get(b);
+                        if (!A || !B) return null;
                         return (
                             <line
                                 key={`${a}-${b}`}
@@ -100,44 +109,45 @@ export default function App() {
                         );
                     })}
 
-
-                    {/* constellation stars (4 spikes + core) */}
+                    {/* constellation stars */}
                     {virgoStars.map((m) => (
                         <g
                             key={m.id}
                             transform={`translate(${m.x} ${m.y})`}
-                            className={`starG ${m.type === "anchor" ? "anchor" : ""} ${selectedId === m.id ? "active" : ""}`}
+                            className={`starG ${m.type === "anchor" ? "anchor" : ""}`}
                             onClick={() => setSelectedId(m.id)}
+                            role="button"
+                            tabIndex={0}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") setSelectedId(m.id);
+                            }}
                         >
-                            {/* stable hover/click target */}
+                            {/* stable hit target */}
                             <circle className="hit" r="4.2" />
 
-                            {/* ring exists always (we control opacity in CSS) */}
-                            <circle className="ring" r={m.type === "anchor" ? 3.9 : 4.2} />
+                            {/* ring only on Spica (smaller). Other stars get r=0 */}
+                            <circle className="ring" r={m.type === "anchor" ? 3.1 : 0} />
 
-                            {/* visuals (scale these only) */}
+                            {/* star visuals */}
                             <g className="starVisual">
-                                {m.type === "anchor" && <circle r="2.4" className="halo" />}
+                                {/* optional halo for Spica */}
+                                {m.type === "anchor" && <circle r="2.6" className="halo" />}
 
                                 <polygon points="0,-2.8 0.55,-1.15 -0.55,-1.15" className="ray" />
                                 <polygon points="2.8,0 1.15,0.55 1.15,-0.55" className="ray" />
                                 <polygon points="0,2.8 0.55,1.15 -0.55,1.15" className="ray" />
                                 <polygon points="-2.8,0 -1.15,0.55 -1.15,-0.55" className="ray" />
 
-                                <circle r={m.type === "anchor" ? 1.05 : 1.5} className="glow" />
-                                <circle r={m.type === "anchor" ? 0.95 : 0.8} className="core" />
-
+                                {/* radii set in JSX (no CSS r:) */}
+                                <circle r={m.type === "anchor" ? 2.1 : 1.5} className="glow" />
+                                <circle r={m.type === "anchor" ? 1.0 : 0.8} className="core" />
                             </g>
                         </g>
                     ))}
                 </svg>
             </div>
 
-            <Modal
-                open={selectedId !== null}
-                onClose={() => setSelectedId(null)}
-                memory={selected || virgoStars[0]}
-            />
+            <Modal open={selectedId !== null} onClose={() => setSelectedId(null)} memory={selected || virgoStars[0]} />
 
             <section className="letterSection">
                 <h2 className="h2">A letter</h2>
@@ -148,7 +158,6 @@ export default function App() {
                     text={`Ari,\n\nI wanted to build something that feels like you: beautiful, intentional, and a little unreal.\n\nYou make me feel calm and hungry for the future at the same time. I love how your mind works, how your heart shows up, how you keep going.\n\nThis is me, choosing you — loudly, carefully, and forever.\n\n— Tikhon`}
                 />
             </section>
-
         </div>
     );
 }

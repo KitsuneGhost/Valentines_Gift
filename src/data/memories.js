@@ -1,45 +1,55 @@
 export const virgoStars = [
-    // LEFT ARM (horizontal)
-    { id: 1, title: "Left 1", x: 18, y: 42 },
-    { id: 2, title: "Left 2", x: 30, y: 40 },
+    // LEFT ARM (long, slightly angled)
+    { id: 1, title: "Left tip", date: "—", note: "Memory", x: 12, y: 44 },
+    { id: 2, title: "Left mid", date: "—", note: "Memory", x: 26, y: 42 },
 
-    // CENTRAL HUB (junction)
-    { id: 3, title: "Hub", x: 44, y: 42 },
+    // CENTRAL HUB
+    { id: 3, title: "Center", date: "—", note: "Memory", x: 42, y: 44 },
 
-    // TOP SPIKE
-    { id: 4, title: "Top", x: 44, y: 26 },
+    // TOP SPIKE (vertical)
+    { id: 4, title: "Top", date: "—", note: "Memory", x: 42, y: 24 },
 
-    // RIGHT ARM
-    { id: 5, title: "Right mid", x: 60, y: 40 },
-    { id: 6, title: "Far right", x: 76, y: 34 },
+    // RIGHT ARM (longer + more horizontal)
+    { id: 5, title: "Right mid", date: "—", note: "Memory", x: 60, y: 40 },
+    { id: 6, title: "Right tip", date: "—", note: "Memory", x: 78, y: 34 },
 
-    // LOWER CONNECTOR (diagonal down-left)
-    { id: 7, title: "Lower mid", x: 38, y: 58 },
+    // LOWER CONNECTOR (diagonal down)
+    { id: 7, title: "Lower mid", date: "—", note: "Memory", x: 36, y: 60 },
 
-    // SPICA (anchor, bottom-left-ish)
-    { id: 8, title: "Spica", x: 30, y: 72, type: "anchor" },
+    // SPICA (anchor, clearly separated)
+    {
+        id: 8,
+        title: "Spica",
+        date: "—",
+        note: "Your anchor memory",
+        x: 30,
+        y: 78,
+        type: "anchor",
+    },
 
-    // LEFT TAIL (small zigzag)
-    { id: 9, title: "Tail 1", x: 22, y: 54 },
-    { id: 10, title: "Tail 2", x: 28, y: 56 },
+    // LEFT TAIL (small zig-zag)
+    { id: 9, title: "Tail 1", date: "—", note: "Memory", x: 18, y: 56 },
+    { id: 10, title: "Tail 2", date: "—", note: "Memory", x: 24, y: 58 },
 ];
 
 export const virgoLinks = [
-    // left arm
     [1, 2],
     [2, 3],
 
-    // hub structure
-    [3, 4], // up
-    [3, 5], // right
-    [5, 6],
+    [3, 4],       // top spike
+    [3, 5],
+    [5, 6],       // right arm
 
-    // down to Spica
     [3, 7],
-    [7, 8],
+    [7, 8],       // Spica stem
 
-    // left tail
     [1, 9],
     [9, 10],
-    [10, 2],
+    [10, 2],      // left tail
+];
+
+export const virgoSupportStars = [
+    { id: "s1", x: 34, y: 36 },
+    { id: "s2", x: 52, y: 54 },
+    { id: "s3", x: 66, y: 28 },
 ];
