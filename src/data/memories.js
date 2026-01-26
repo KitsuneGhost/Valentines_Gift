@@ -10,3 +10,11 @@ export const links = [
     [3, 2],
     [2, 4],
 ];
+
+export const supportStars = [
+    { id: "s1", x: 30, y: 18 },
+    { id: "s2", x: 54, y: 40 },
+    { id: "s3", x: 72, y: 32 },
+    { id: "s4", x: 65, y: 78 },
+    { id: "s5", x: 22, y: 62 },
+];

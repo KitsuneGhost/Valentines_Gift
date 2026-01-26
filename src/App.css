@@ -138,6 +138,15 @@
   filter: drop-shadow(0 0 14px rgba(255, 150, 220, 0.3));
 }
 
+.supportRay {
+  fill: rgba(255,255,255,0.25);
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.10));
+}
+
+.supportCore {
+  fill: rgba(255,255,255,0.55);
+}
+
 
 .glow { fill: rgba(255,255,255,0.14); }
 .core { fill: rgba(255,255,255,0.95); }

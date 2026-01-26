@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { memories, links } from "./data/memories";
+import { memories, links, supportStars } from "./data/memories";
 import "./App.css";
 import TypedLetter from "./components/TypedLetter.jsx";
 
@@ -72,6 +72,18 @@ export default function App() {
 
             <div className="sky">
                 <svg className="skySvg" viewBox="0 0 100 100" preserveAspectRatio="none">
+
+                    {/* support stars */}
+                    {supportStars.map((s) => (
+                        <g key={s.id} transform={`translate(${s.x} ${s.y})`} className="supportStar">
+                            <polygon points="0,-2.2 0.45,-0.9 -0.45,-0.9" className="supportRay" />
+                            <polygon points="2.2,0 0.9,0.45 0.9,-0.45" className="supportRay" />
+                            <polygon points="0,2.2 0.45,0.9 -0.45,0.9" className="supportRay" />
+                            <polygon points="-2.2,0 -0.9,0.45 -0.9,-0.45" className="supportRay" />
+                            <circle r="0.65" className="supportCore" />
+                        </g>
+                    ))}
+
                     {/* background random stars */}
                     {bgStars.map((s) => (
                         <circle
