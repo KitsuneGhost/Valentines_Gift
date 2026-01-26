@@ -1,44 +1,96 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
+/**
+ * Smooth, premium reveal:
+ * - Reveals characters in the active line
+ * - Adds a short pause between lines
+ * - StrictMode-safe (cleans timers)
+ */
 export default function TypedLetter({
-                                        text,
-                                        speed = 18, // ms per character (lower = faster)
+                                        text = "",
+                                        speed = 18,         // ms per char
+                                        linePause = 280,    // pause after finishing a line
+                                        startDelay = 450,   // initial delay
                                     }) {
-    const [i, setI] = useState(0);
-    const [playing, setPlaying] = useState(true);
+    const lines = useMemo(() => text.split("\n"), [text]);
 
-    const done = i >= text.length;
-    const visible = useMemo(() => text.slice(0, i), [text, i]);
+    const [lineIndex, setLineIndex] = useState(0);
+    const [charIndex, setCharIndex] = useState(0);
+    const [started, setStarted] = useState(false);
+    const [done, setDone] = useState(false);
 
-    useEffect(() => {
-        if (!playing || done) return;
+    const timersRef = useRef([]);
 
-        const t = setTimeout(() => setI((prev) => prev + 1), speed);
-        return () => clearTimeout(t);
-    }, [playing, done, speed]);
-
-    const restart = () => {
-        setI(0);
-        setPlaying(true);
+    const clearTimers = () => {
+        timersRef.current.forEach(clearTimeout);
+        timersRef.current = [];
     };
 
-    return (
-        <div className="letterCard">
-            <div className="letterText">
-                {visible}
-                {!done && <span className="cursor">▍</span>}
-            </div>
+    useEffect(() => {
+        clearTimers();
+        setLineIndex(0);
+        setCharIndex(0);
+        setStarted(false);
+        setDone(false);
 
-            <div className="letterControls">
-                <button className="btn" onClick={() => setPlaying((p) => !p)}>
-                    {playing ? "Pause" : "Play"}
-                </button>
-                <button className="btn ghost" onClick={() => setI(text.length)}>
-                    Skip
-                </button>
-                <button className="btn ghost" onClick={restart}>
-                    Restart
-                </button>
+        const t = setTimeout(() => setStarted(true), startDelay);
+        timersRef.current.push(t);
+
+        return () => clearTimers();
+    }, [text, startDelay]);
+
+    useEffect(() => {
+        if (!started || done) return;
+
+        const currentLine = lines[lineIndex] ?? "";
+
+        // finished everything
+        if (lineIndex >= lines.length) {
+            setDone(true);
+            return;
+        }
+
+        // reveal next char
+        if (charIndex < currentLine.length) {
+            const t = setTimeout(() => setCharIndex((c) => c + 1), speed);
+            timersRef.current.push(t);
+            return;
+        }
+
+        // line finished -> pause, then go next line
+        const t = setTimeout(() => {
+            setLineIndex((l) => l + 1);
+            setCharIndex(0);
+        }, linePause);
+        timersRef.current.push(t);
+    }, [started, done, lines, lineIndex, charIndex, speed, linePause]);
+
+    return (
+        <div className="typedWrap">
+            <div className="typedCard">
+        <pre className="typedPre" aria-label="Letter">
+          {lines.map((ln, i) => {
+              const isPast = i < lineIndex;
+              const isActive = i === lineIndex && !done;
+              const visible = isPast ? ln : isActive ? ln.slice(0, charIndex) : "";
+
+              return (
+                  <div
+                      key={i}
+                      className={[
+                          "typedLine",
+                          isPast && "past",
+                          isActive && "active",
+                      ]
+                          .filter(Boolean)
+                          .join(" ")}
+                  >
+                      <span className="typedText">{visible}</span>
+                      {isActive && <span className="softCursor" aria-hidden="true" />}
+                  </div>
+              );
+          })}
+        </pre>
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
     virgoStars,
     virgoLinks,
@@ -24,6 +24,30 @@ function Modal({ open, onClose, memory }) {
 export default function App() {
     const [selectedId, setSelectedId] = useState(null);
     const [traceMode, setTraceMode] = useState(false);
+
+    const skyRef = useRef(null);
+    const [cosmicFaded, setCosmicFaded] = useState(false);
+
+    useEffect(() => {
+        const el = skyRef.current;
+        if (!el) return;
+
+        // When the sky panel leaves the viewport upwards, fade the cosmic section out
+        const obs = new IntersectionObserver(
+            ([entry]) => {
+                // If sky is not visible anymore -> fade cosmic away
+                setCosmicFaded(!entry.isIntersecting);
+            },
+            {
+                root: null,
+                threshold: 0.12,
+                rootMargin: "-10% 0px -55% 0px", // fade a bit after you start leaving the sky
+            }
+        );
+
+        obs.observe(el);
+        return () => obs.disconnect();
+    }, []);
 
     const selected = useMemo(
         () => virgoStars.find((m) => m.id === selectedId),
