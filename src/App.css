@@ -1,12 +1,98 @@
+:root{
+  --pinkBase: #fde8f2;
+  --pinkGlow: rgba(255, 170, 210, 0.28);
+}
+
+/* Force the app background even if index.css/#root has something else */
+html, body, #root{
+  min-height: 100%;
+  background:
+          radial-gradient(1200px 700px at 50% 0%, var(--pinkGlow), transparent 60%),
+          var(--pinkBase);
+}
+
+body{
+  margin: 0;
+}
+
 .page {
   width: 100%;
   max-width: 1100px;
   margin: 0 auto;
-  padding: 28px 18px 40px;
+  padding: 0 18px 40px;
   text-align: center;
-  color: rgba(255,255,255,0.92);
+  color: rgba(25, 10, 25, 0.92);
 }
 
+/* ---------- COSMIC SECTION (header + sky) ---------- */
+.cosmicSection {
+  position: relative;
+
+  /* full-bleed */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+
+  padding: 28px 0 70px;
+  isolation: isolate;
+
+  /* fade value set by JS */
+  --cosmicFade: 0;
+}
+
+/* make sure content stays above background layers */
+.cosmicSection > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* cosmic background */
+.cosmicSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background:
+          radial-gradient(1100px 700px at 20% 20%, rgba(255, 80, 170, 0.18), transparent 55%),
+          radial-gradient(1100px 750px at 85% 15%, rgba(120, 180, 255, 0.16), transparent 60%),
+          radial-gradient(1300px 900px at 50% 85%, rgba(200, 120, 255, 0.11), transparent 62%),
+          linear-gradient(180deg, rgba(10,10,20,0.96), rgba(7,7,18,0.98));
+
+  opacity: calc(1 - var(--cosmicFade));
+  transition: opacity 140ms linear;
+}
+
+/* the blend tail — fades INTO PINK (not transparent) */
+.cosmicSection::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+
+  bottom: -420px;
+  height: 860px;
+
+  z-index: 1;
+  pointer-events: none;
+
+  /* softer, longer fade + pink fog */
+  background:
+          radial-gradient(900px 420px at 50% 78%, rgba(255,170,210,0.22), transparent 70%),
+          linear-gradient(
+                  to bottom,
+                  rgba(7,7,18,0.00) 0%,
+                  rgba(7,7,18,0.28) 25%,
+                  rgba(7,7,18,0.55) 45%,
+                  rgba(7,7,18,0.22) 65%,
+                  var(--pinkBase) 100%
+          );
+
+  opacity: calc(1 - var(--cosmicFade));
+  transition: opacity 180ms linear;
+}
+
+
+/* --- header text --- */
 .hero h1 {
   margin: 8px 0 8px;
   font-size: 44px;
@@ -14,14 +100,23 @@
 }
 
 .muted {
-  color: rgba(255,255,255,0.72);
+  color: rgba(60, 20, 40, 0.68);
 }
 
-/* ---- SKY ---- */
+/* readable on cosmic */
+.cosmicSection .hero h1 {
+  color: rgba(255, 255, 255, 0.95);
+}
+.cosmicSection .hero h2 {
+  color: rgba(255, 255, 255, 0.90);
+}
+.cosmicSection .hero .muted {
+  color: rgba(255, 255, 255, 0.70);
+}
+
+/* ---- SKY PANEL ---- */
 .sky {
   position: relative;
-
-  /* this will now truly center because body is not flex anymore */
   margin: 22px auto 0;
 
   width: min(96vw, 1100px);
@@ -36,8 +131,8 @@
           radial-gradient(1100px 700px at 50% 80%, rgba(200, 120, 255, 0.08), transparent 60%),
           linear-gradient(180deg, rgba(10,10,20,0.92), rgba(7,7,18,0.98));
 
-  border: 1px solid rgba(255,255,255,0.08);
-  box-shadow: 0 22px 90px rgba(0,0,0,0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 22px 90px rgba(0, 0, 0, 0.70);
 }
 
 .skySvg {
@@ -47,14 +142,13 @@
 }
 
 .line {
-  stroke: rgba(255,255,255,0.14);
+  stroke: rgba(255, 255, 255, 0.14);
   stroke-width: 0.22;
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.10));
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.10));
 }
 
 .starG { cursor: pointer; }
 
-/* stable hit target */
 .hit {
   fill: transparent !important;
   stroke: transparent !important;
@@ -62,13 +156,11 @@
   pointer-events: all;
 }
 
-/* ring: only visible on Spica because other stars have r=0 in JSX */
 .ring {
   pointer-events: none;
   fill: transparent;
-  stroke: rgba(255,255,255,0.38);
+  stroke: rgba(255, 255, 255, 0.38);
   stroke-width: 0.24;
-  opacity: 1;
   filter: drop-shadow(0 0 14px rgba(255, 170, 220, 0.22));
 }
 
@@ -80,25 +172,21 @@
 
 .starG:hover .starVisual {
   transform: scale(1.14);
-  filter: drop-shadow(0 0 16px rgba(255,255,255,0.30));
+  filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.30));
 }
 
 .ray {
   fill: rgba(255, 255, 255, 0.65);
-  filter: drop-shadow(0 0 6px rgba(255,255,255,0.22));
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.22));
 }
 
-.glow { fill: rgba(255,255,255,0.14); }
-.core { fill: rgba(255,255,255,0.95); }
+.core { fill: rgba(255, 255, 255, 0.95); }
 
-/* Spica stronger */
 .starG.anchor {
   filter: drop-shadow(0 0 26px rgba(255, 200, 230, 0.45));
 }
-.starG.anchor .ray { fill: rgba(255,255,255,0.90); }
-.starG.anchor .glow { fill: rgba(255,255,255,0.18); }
+.starG.anchor .ray { fill: rgba(255, 255, 255, 0.90); }
 
-/* Halo behind Spica (make sure halo circle is rendered BEFORE ring/starVisual in JSX) */
 .halo {
   fill: rgba(255, 170, 220, 0.12);
   filter:
@@ -117,13 +205,13 @@
   animation: spicaPulse 3.2s ease-in-out infinite;
 }
 
-.supportCore { fill: rgba(255,255,255,0.22); }
+.supportCore { fill: rgba(255, 255, 255, 0.22); }
 
 /* ---- MODAL ---- */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.55);
+  background: rgba(0, 0, 0, 0.55);
   display: grid;
   place-items: center;
   padding: 16px;
@@ -133,49 +221,61 @@
 .modal {
   width: min(560px, 92vw);
   border-radius: 18px;
-  background: rgba(20,20,30,0.92);
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 24px 110px rgba(0,0,0,0.7);
+  background: rgba(20, 20, 30, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 24px 110px rgba(0, 0, 0, 0.70);
   padding: 18px 18px 16px;
   text-align: left;
   position: relative;
 }
 
-.modal h2 { margin: 6px 0 4px; }
-.note { margin-top: 10px; line-height: 1.55; }
+.modal h2 { margin: 6px 0 4px; color: rgba(255,255,255,0.95); }
+.modal .muted { color: rgba(255,255,255,0.70); }
+.note { margin-top: 10px; line-height: 1.55; color: rgba(255,255,255,0.90); }
 
-/* FIXED X (override global button padding etc.) */
 .x {
   position: absolute;
   top: 12px;
   right: 12px;
-
   width: 34px;
   height: 34px;
-  padding: 0 !important;     /* <-- kills global button padding */
+  padding: 0 !important;
   border-radius: 12px;
-
-  border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.08);
-  color: rgba(255,255,255,0.92);
-
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.92);
   display: flex;
   align-items: center;
   justify-content: center;
-
   line-height: 1;
   font-size: 18px;
-
   cursor: pointer;
   transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
-
 .x:hover {
   transform: scale(1.04);
-  background: rgba(255,255,255,0.12);
-  border-color: rgba(255,255,255,0.20);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.20);
 }
 
 /* ---- LETTER ---- */
-.h2 { margin: 18px 0 6px; font-size: 26px; letter-spacing: -0.3px; }
-.letterSection { margin: 24px auto 10px; width: min(92vw, 980px); }
+.h2 {
+  margin: 18px 0 6px;
+  font-size: 26px;
+  letter-spacing: -0.3px;
+}
+
+.letterSection{
+  position: relative;
+  z-index: 0;
+  margin: 250px auto 10px;
+  width: min(92vw, 980px);
+  padding-top: 18px;
+  padding-bottom: 40px;
+  border-radius: 18px;
+  box-shadow: 0 18px 70px rgba(0,0,0,0.12);
+
+  background:
+          radial-gradient(900px 500px at 50% 0%, rgba(255, 170, 210, 0.22), transparent 60%),
+          var(--pinkBase);
+}

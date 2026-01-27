@@ -3,9 +3,9 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: dark;
-  color: rgba(255, 255, 255, 0.92);
-  background-color: #0b0b12;
+  color-scheme: light;
+  color: rgba(25, 10, 25, 0.92);
+  background-color: #fff4f8;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,7 +13,6 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* IMPORTANT: remove the Vite default flex-centering */
 html, body {
   height: 100%;
 }
@@ -22,16 +21,19 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  display: block;              /* <-- this fixes your “not centered” issue */
-  background: radial-gradient(900px 700px at 50% 0%, rgba(255,255,255,0.06), transparent 60%),
-  #0b0b12;
+
+  /* GLOBAL PINK BACKGROUND */
+  background:
+          radial-gradient(900px 700px at 25% 10%, rgba(255, 170, 210, 0.55), transparent 60%),
+          radial-gradient(900px 700px at 85% 35%, rgba(255, 210, 235, 0.65), transparent 62%),
+          radial-gradient(900px 700px at 45% 90%, rgba(255, 190, 225, 0.50), transparent 60%),
+          #fff4f8;
 }
 
 #root {
   min-height: 100vh;
 }
 
-/* Keep default buttons sane, but NOT forced huge padding */
 button {
   font-family: inherit;
 }
