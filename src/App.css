@@ -1,3 +1,20 @@
+:root{
+  --pinkBase: #fde8f2;
+  --pinkGlow: rgba(255, 170, 210, 0.28);
+}
+
+/* Force the app background even if index.css/#root has something else */
+html, body, #root{
+  min-height: 100%;
+  background:
+          radial-gradient(1200px 700px at 50% 0%, var(--pinkGlow), transparent 60%),
+          var(--pinkBase);
+}
+
+body{
+  margin: 0;
+}
+
 .page {
   width: 100%;
   max-width: 1100px;
@@ -10,30 +27,30 @@
 /* ---------- COSMIC SECTION (header + sky) ---------- */
 .cosmicSection {
   position: relative;
-  isolation: isolate;
-  z-index: 2; /* important */
 
-  /* full-bleed even though .page is max-width */
+  /* full-bleed */
   width: 100vw;
   margin-left: calc(50% - 50vw);
 
-  /* give space so you can actually fade while scrolling */
-  padding: 50px 0 90px; /* bigger bottom padding */
-  min-height: 110vh;    /* makes section taller so transition isn't cramped */
+  padding: 28px 0 70px;
+  isolation: isolate;
 
-  display: grid;
-  place-items: start center;
-
-  /* 0 = fully cosmic, 1 = fully pink */
+  /* fade value set by JS */
   --cosmicFade: 0;
 }
 
-/* cosmic background behind entire section */
+/* make sure content stays above background layers */
+.cosmicSection > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* cosmic background */
 .cosmicSection::before {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 1;
 
   background:
           radial-gradient(1100px 700px at 20% 20%, rgba(255, 80, 170, 0.18), transparent 55%),
@@ -45,26 +62,26 @@
   transition: opacity 140ms linear;
 }
 
-/* the blend tail that hides the ugly seam */
+/* the blend tail — fades INTO PINK (not transparent) */
 .cosmicSection::after {
   content: "";
   position: absolute;
   left: 0;
   right: 0;
 
-  /* spill into the next section */
-  bottom: -260px;
-  height: 600px;
+  /* spill down into the next section */
+  bottom: -340px;
+  height: 680px;
 
-  z-index: -1;
+  z-index: 1;
   pointer-events: none;
 
   background: linear-gradient(
           to bottom,
-          rgba(7,7,18,0.0) 0%,
-          rgba(7,7,18,0.55) 35%,
-          rgba(7,7,18,0.85) 60%,
-          rgba(7,7,18,0.0) 100%
+          rgba(7,7,18,0.00) 0%,
+          rgba(7,7,18,0.55) 30%,
+          rgba(7,7,18,0.85) 55%,
+          var(--pinkBase) 100%
   );
 
   opacity: calc(1 - var(--cosmicFade));
@@ -245,13 +262,15 @@
   letter-spacing: -0.3px;
 }
 
-.letterSection {
+.letterSection{
   position: relative;
-  z-index: 1;
-  background: transparent;
+  z-index: 0;
   margin: 24px auto 10px;
   width: min(92vw, 980px);
   padding-top: 18px;
   padding-bottom: 40px;
-  background: radial-gradient(900px 500px at 50% 0%, rgba(255, 170, 210, 0.22), transparent 60%);
+
+  background:
+          radial-gradient(900px 500px at 50% 0%, rgba(255, 170, 210, 0.22), transparent 60%),
+          var(--pinkBase);
 }
