@@ -1,96 +1,104 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 /**
- * Smooth, premium reveal:
- * - Reveals characters in the active line
- * - Adds a short pause between lines
- * - StrictMode-safe (cleans timers)
+ * High-end line-by-line reveal (not typewriter).
+ * - Reveals one full line at a time.
+ * - Soft cursor only on the active line.
  */
 export default function TypedLetter({
-                                        text = "",
-                                        speed = 18,         // ms per char
-                                        linePause = 280,    // pause after finishing a line
-                                        startDelay = 450,   // initial delay
+                                        text,
+                                        speed = 14,
+                                        linePause = 420,
+                                        startDelay = 450,
                                     }) {
-    const lines = useMemo(() => text.split("\n"), [text]);
+    const lines = useMemo(() => String(text ?? "").split("\n"), [text]);
 
     const [lineIndex, setLineIndex] = useState(0);
     const [charIndex, setCharIndex] = useState(0);
     const [started, setStarted] = useState(false);
-    const [done, setDone] = useState(false);
 
-    const timersRef = useRef([]);
-
-    const clearTimers = () => {
-        timersRef.current.forEach(clearTimeout);
-        timersRef.current = [];
-    };
+    const timerRef = useRef(null);
+    const delayRef = useRef(null);
 
     useEffect(() => {
-        clearTimers();
+        // reset when text changes
         setLineIndex(0);
         setCharIndex(0);
         setStarted(false);
-        setDone(false);
 
-        const t = setTimeout(() => setStarted(true), startDelay);
-        timersRef.current.push(t);
+        if (timerRef.current) clearTimeout(timerRef.current);
+        if (delayRef.current) clearTimeout(delayRef.current);
 
-        return () => clearTimers();
+        delayRef.current = setTimeout(() => setStarted(true), startDelay);
+
+        return () => {
+            if (timerRef.current) clearTimeout(timerRef.current);
+            if (delayRef.current) clearTimeout(delayRef.current);
+        };
     }, [text, startDelay]);
 
     useEffect(() => {
-        if (!started || done) return;
+        if (!started) return;
 
         const currentLine = lines[lineIndex] ?? "";
+        const isLastLine = lineIndex >= lines.length - 1;
+        const lineDone = charIndex >= currentLine.length;
 
-        // finished everything
-        if (lineIndex >= lines.length) {
-            setDone(true);
+        if (lineDone) {
+            // move to next line after a pause
+            if (!isLastLine) {
+                timerRef.current = setTimeout(() => {
+                    setLineIndex((i) => i + 1);
+                    setCharIndex(0);
+                }, linePause);
+            }
             return;
         }
 
-        // reveal next char
-        if (charIndex < currentLine.length) {
-            const t = setTimeout(() => setCharIndex((c) => c + 1), speed);
-            timersRef.current.push(t);
-            return;
-        }
+        timerRef.current = setTimeout(() => {
+            setCharIndex((c) => c + 1);
+        }, speed);
 
-        // line finished -> pause, then go next line
-        const t = setTimeout(() => {
-            setLineIndex((l) => l + 1);
-            setCharIndex(0);
-        }, linePause);
-        timersRef.current.push(t);
-    }, [started, done, lines, lineIndex, charIndex, speed, linePause]);
+        return () => {
+            if (timerRef.current) clearTimeout(timerRef.current);
+        };
+    }, [started, lines, lineIndex, charIndex, speed, linePause]);
+
+    const done =
+        started &&
+        lineIndex === lines.length - 1 &&
+        charIndex >= (lines[lines.length - 1]?.length ?? 0);
 
     return (
         <div className="typedWrap">
             <div className="typedCard">
-        <pre className="typedPre" aria-label="Letter">
+        <pre className="typedPre">
           {lines.map((ln, i) => {
               const isPast = i < lineIndex;
-              const isActive = i === lineIndex && !done;
-              const visible = isPast ? ln : isActive ? ln.slice(0, charIndex) : "";
+              const isActive = i === lineIndex;
+              const isFuture = i > lineIndex;
+
+              const visibleText = isPast
+                  ? ln
+                  : isActive
+                      ? ln.slice(0, charIndex)
+                      : "";
 
               return (
                   <div
                       key={i}
-                      className={[
-                          "typedLine",
-                          isPast && "past",
-                          isActive && "active",
-                      ]
-                          .filter(Boolean)
-                          .join(" ")}
+                      className={`typedLine ${isPast ? "past" : ""} ${
+                          isActive ? "active" : ""
+                      } ${isFuture ? "future" : ""}`}
                   >
-                      <span className="typedText">{visible}</span>
-                      {isActive && <span className="softCursor" aria-hidden="true" />}
+                      <span className="typedText">{visibleText}</span>
+                      {isActive && !done && <span className="softCursor" />}
                   </div>
               );
           })}
         </pre>
+
+                {done && <div className="typedDone">•</div>}
             </div>
         </div>
     );
