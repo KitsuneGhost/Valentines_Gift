@@ -9,7 +9,7 @@ export default function MemoryVault({ chapters = [] }) {
 
     const [unlocked, setUnlocked] = useState(() => {
         try {
-            const raw = localStorage.getItem(storageKey);
+            const raw = sessionStorage.getItem(storageKey);
             return raw ? JSON.parse(raw) : {};
         } catch {
             return {};
@@ -20,7 +20,7 @@ export default function MemoryVault({ chapters = [] }) {
     const [wrong, setWrong] = useState({}); // per-chapter shake
 
     useEffect(() => {
-        localStorage.setItem(storageKey, JSON.stringify(unlocked));
+        sessionStorage.setItem(storageKey, JSON.stringify(unlocked));
     }, [unlocked]);
 
     useEffect(() => {
@@ -89,6 +89,17 @@ export default function MemoryVault({ chapters = [] }) {
                     );
                 })}
             </div>
+
+            <button
+                className="vaultBtn"
+                style={{ marginTop: 10 }}
+                onClick={() => {
+                    setUnlocked({});
+                    try { sessionStorage.removeItem("valentine_vault_unlocked"); } catch {}
+                }}
+            >
+                Reset Vault
+            </button>
 
             {allUnlocked && (
                 <div className="vaultFinal">
