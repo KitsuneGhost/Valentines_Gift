@@ -62,7 +62,15 @@ export default function PolaroidGallery({ items = [] }) {
                             <div className="pModalDate">{activeItem.date}</div>
                         </div>
 
-                        <div className="pModalPhoto" />
+                        <div className="pModalPhoto">
+                            <img
+                                className="pModalImg"
+                                src={activeItem.image}
+                                alt={activeItem.title}
+                                draggable="false"
+                            />
+                        </div>
+
 
                         <div className="pModalNote">{activeItem.note}</div>
                     </div>
@@ -118,7 +126,16 @@ function PolaroidCard({ item, index, reducedMotion, onOpen }) {
             onClick={onOpen}
             type="button"
         >
-            <div className="polaroidPhoto" />
+            <div className="polaroidPhoto">
+                <img
+                    className="polaroidImg"
+                    src={item.image}
+                    alt={item.title}
+                    loading="lazy"
+                    draggable="false"
+                />
+            </div>
+
             <div className="polaroidCaption">
                 <div className="polaroidTitle">{item.title}</div>
                 <div className="polaroidDate">{item.date}</div>

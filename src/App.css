@@ -560,3 +560,38 @@ body{
   color: rgba(25,10,25,0.90);
 }
 
+/* Polaroid photo wrapper */
+.polaroidPhoto{
+  width: 100%;
+  height: 230px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.35);
+  border: 1px solid rgba(0,0,0,0.06);
+}
+
+.polaroidImg{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Modal image */
+.pModalPhoto{
+  width: 100%;
+  height: 360px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(255,255,255,0.25);
+  border: 1px solid rgba(255,255,255,0.10);
+  margin-top: 12px;
+}
+
+.pModalImg{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
