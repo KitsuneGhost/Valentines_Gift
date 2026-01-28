@@ -2,8 +2,10 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import TypedLetter from "./components/TypedLetter.jsx";
 import MemoryVault from "./components/MemoryVault.jsx";
+import PolaroidGallery from "./components/PolaroidGallery.jsx";
 import { vaultChapters } from "./data/vault";
 import { virgoStars, virgoLinks, virgoSupportStars } from "./data/memories";
+import { polaroids } from "./data/polaroids.js";
 
 function Modal({ open, onClose, memory }) {
     if (!open) return null;
@@ -185,6 +187,8 @@ export default function App() {
             </section>
 
             <MemoryVault chapters={vaultChapters} />
+
+            <PolaroidGallery items={polaroids} />
         </div>
     );
 }
