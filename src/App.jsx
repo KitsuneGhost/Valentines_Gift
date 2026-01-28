@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import "./App.css";
 import TypedLetter from "./components/TypedLetter.jsx";
+import MemoryVault from "./components/MemoryVault.jsx";
+import { vaultChapters } from "./data/vault";
 import { virgoStars, virgoLinks, virgoSupportStars } from "./data/memories";
 
 function Modal({ open, onClose, memory }) {
@@ -181,6 +183,8 @@ export default function App() {
                     text={`Ari,\n\nI wanted to build something that feels like you.\n\n— Tikhon`}
                 />
             </section>
+
+            <MemoryVault chapters={vaultChapters} />
         </div>
     );
 }
