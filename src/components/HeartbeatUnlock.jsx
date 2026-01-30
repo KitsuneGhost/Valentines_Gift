@@ -1,80 +1,81 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 
 export default function HeartbeatUnlock() {
-    const storageKey = "valentine_heartbeat_unlocked";
     const HOLD_MS = 2200;
+    const R = 46;
+    const CIRC = 2 * Math.PI * R;
 
-    const [unlocked, setUnlocked] = useState(() => {
-        try {
-            return localStorage.getItem(storageKey) === "1";
-        } catch {
-            return false;
-        }
-    });
-
+    const [unlocked, setUnlocked] = useState(false); // resets on every page load
     const [holding, setHolding] = useState(false);
     const [progress, setProgress] = useState(0); // 0..1
 
-    const rafRef = useRef(null);
-    const startRef = useRef(0);
+    const intervalRef = useRef(null);
+    const startTimeRef = useRef(0);
 
-    const stop = () => {
-        setHolding(false);
-        setProgress(0);
-        if (rafRef.current) cancelAnimationFrame(rafRef.current);
-        rafRef.current = null;
+    const cleanup = () => {
+        if (intervalRef.current) clearInterval(intervalRef.current);
+        intervalRef.current = null;
     };
 
-    const tick = (now) => {
-        const elapsed = now - startRef.current;
-        const p = Math.min(1, elapsed / HOLD_MS);
-        setProgress(p);
-
-        if (p >= 1) {
-            setUnlocked(true);
-            try {
-                localStorage.setItem(storageKey, "1");
-            } catch { /* empty */ }
-            setHolding(false);
-            rafRef.current = null;
-            return;
-        }
-
-        rafRef.current = requestAnimationFrame(tick);
+    const stop = () => {
+        cleanup();
+        setHolding(false);
+        setProgress(0);
     };
 
     const start = () => {
-        if (unlocked || holding) return;
+        if (unlocked) return;
+        if (intervalRef.current) return; // already holding
+
         setHolding(true);
         setProgress(0);
-        startRef.current = performance.now();
-        rafRef.current = requestAnimationFrame(tick);
+        startTimeRef.current = Date.now();
+
+        intervalRef.current = setInterval(() => {
+            const elapsed = Date.now() - startTimeRef.current;
+            const p = Math.min(1, elapsed / HOLD_MS);
+            setProgress(p);
+
+            if (p >= 1) {
+                cleanup();
+                setHolding(false);
+                setUnlocked(true);
+            }
+        }, 16); // ~60fps
     };
 
-    // Space to hold
+    // Space hold
     useEffect(() => {
         const onDown = (e) => {
-            if (e.code === "Space") {
-                e.preventDefault();
-                start();
-            }
-        };
-        const onUp = (e) => {
-            if (e.code === "Space") stop();
+            if (e.code !== "Space") return;
+
+            // stop scroll and default "button click" behavior
+            e.preventDefault();
+            e.stopPropagation();
+
+            start();
         };
 
-        window.addEventListener("keydown", onDown, { passive: false });
-        window.addEventListener("keyup", onUp);
+        const onUp = (e) => {
+            if (e.code !== "Space") return;
+            e.preventDefault();
+            e.stopPropagation();
+            stop();
+        };
+
+        window.addEventListener("keydown", onDown, { passive: false, capture: true });
+        window.addEventListener("keyup", onUp, { capture: true });
 
         return () => {
-            window.removeEventListener("keydown", onDown);
-            window.removeEventListener("keyup", onUp);
-            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+            window.removeEventListener("keydown", onDown, { capture: true });
+            window.removeEventListener("keyup", onUp, { capture: true });
+            cleanup();
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [unlocked, holding]);
+    }, [unlocked]);
 
     const pct = useMemo(() => Math.round(progress * 100), [progress]);
+    const dashoffset = useMemo(() => (1 - progress) * CIRC, [progress]);
 
     return (
         <section className="heartSection">
@@ -94,27 +95,32 @@ export default function HeartbeatUnlock() {
                         e.preventDefault();
                         start();
                     }}
-                    onTouchEnd={stop}
+                    onTouchEnd={(e) => {
+                        e.preventDefault();
+                        stop();
+                    }}
                     aria-label="Hold to sync heartbeat"
                 >
                     <div className="heartPulse" />
                     <div className="heartIcon">♥</div>
 
                     <svg className="heartRing" viewBox="0 0 120 120" aria-hidden="true">
-                        <circle className="ringBg" cx="60" cy="60" r="46" />
+                        <circle className="ringBg" cx="60" cy="60" r={R} />
                         <circle
                             className="ringFg"
                             cx="60"
                             cy="60"
-                            r="46"
+                            r={R}
                             style={{
-                                strokeDasharray: 2 * Math.PI * 46,
-                                strokeDashoffset: (1 - progress) * 2 * Math.PI * 46,
+                                strokeDasharray: CIRC,
+                                strokeDashoffset: dashoffset,
                             }}
                         />
                     </svg>
 
-                    {!unlocked && holding && <div className="heartPct">{pct}%</div>}
+                    {!unlocked && (
+                        <div className="heartHint">{holding ? `${pct}%` : "Hold"}</div>
+                    )}
                     {unlocked && <div className="heartDone">Unlocked</div>}
                 </button>
 

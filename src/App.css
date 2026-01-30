@@ -739,10 +739,11 @@ body{
   border-radius: 999px;
   border: 1px solid rgba(180, 90, 130, 0.20);
   background: rgba(255,255,255,0.55);
-  box-shadow: 0 16px 70px rgba(0,0,0,0.08);
   cursor: pointer;
   overflow: hidden;
-  transition: transform 140ms ease;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none; /* IMPORTANT for hold on mobile */
 }
 
 .heartBtn:hover{ transform: translateY(-1px); }
@@ -771,6 +772,7 @@ body{
   position: absolute;
   inset: 0;
   transform: rotate(-90deg);
+  pointer-events: none;
 }
 
 .ringBg{
@@ -800,6 +802,18 @@ body{
   border: 1px solid rgba(180, 90, 130, 0.18);
 }
 
+.heartHint, .heartDone{
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.72);
+  border: 1px solid rgba(180, 90, 130, 0.18);
+}
+
 .heartCard{
   width: min(640px, 92vw);
   padding: 16px 16px 14px;
@@ -823,7 +837,7 @@ body{
 }
 
 .heartWrap.holding .heartPulse{
-  animation-duration: 1.0s;
+  animation-duration: 0.95s; /* beats faster while holding */
   opacity: 1;
 }
 
