@@ -595,3 +595,125 @@ body{
   display: block;
 }
 
+/* ---- DAILY REASONS ---- */
+.reasonsSection{
+  margin: 46px auto 30px;
+  width: min(92vw, 980px);
+  text-align: center;
+}
+
+.reasonCard{
+  margin: 16px auto 0;
+  width: min(760px, 92vw);
+  padding: 18px 18px 16px;
+  border-radius: 20px;
+  background: rgba(255,255,255,0.58);
+  border: 1px solid rgba(180, 90, 130, 0.16);
+  box-shadow: 0 16px 70px rgba(0,0,0,0.08);
+  backdrop-filter: blur(12px);
+}
+
+.reasonText{
+  min-height: 56px;
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  line-height: 1.55;
+  color: rgba(25,10,25,0.92);
+  opacity: 0.92;
+  transform: translateY(2px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.reasonText.show{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reasonActions{
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.reasonBtn{
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(180, 90, 130, 0.20);
+  background: rgba(255,255,255,0.72);
+  cursor: pointer;
+  transition: transform 140ms ease, background 140ms ease, border-color 140ms ease;
+}
+
+.reasonBtn:hover{
+  transform: translateY(-1px);
+  border-color: rgba(180, 90, 130, 0.30);
+  background: rgba(255,255,255,0.86);
+}
+
+.reasonBtn.primary{
+  background: rgba(255, 160, 210, 0.42);
+}
+
+.reasonBtn.primary:hover{
+  background: rgba(255, 160, 210, 0.52);
+}
+
+.reasonBtn:disabled{
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reasonsListWrap{
+  margin: 16px auto 0;
+  width: min(760px, 92vw);
+  text-align: left;
+}
+
+.reasonsListTitle{
+  font-weight: 800;
+  letter-spacing: -0.2px;
+}
+
+.reasonsList{
+  list-style: none;
+  padding: 0;
+  margin: 10px 0 0;
+  display: grid;
+  gap: 10px;
+}
+
+.reasonItem{
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 12px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.52);
+  border: 1px solid rgba(180, 90, 130, 0.14);
+  box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+  backdrop-filter: blur(10px);
+}
+
+.reasonItemText{
+  line-height: 1.55;
+  color: rgba(25,10,25,0.92);
+}
+
+.reasonRemove{
+  width: 32px;
+  height: 32px;
+  border-radius: 12px;
+  border: 1px solid rgba(180, 90, 130, 0.18);
+  background: rgba(255,255,255,0.70);
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.reasonRemove:hover{
+  background: rgba(255,255,255,0.88);
+}

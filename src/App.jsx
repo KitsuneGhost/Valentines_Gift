@@ -3,6 +3,8 @@ import "./App.css";
 import TypedLetter from "./components/TypedLetter.jsx";
 import MemoryVault from "./components/MemoryVault.jsx";
 import PolaroidGallery from "./components/PolaroidGallery.jsx";
+import DailyReasons from "./components/DailyReasons.jsx";
+import { reasonsPool } from "./data/reasons";
 import { vaultChapters } from "./data/vault";
 import { virgoStars, virgoLinks, virgoSupportStars } from "./data/memories";
 import { polaroids } from "./data/polaroids.js";
@@ -189,6 +191,9 @@ export default function App() {
             <MemoryVault chapters={vaultChapters} />
 
             <PolaroidGallery items={polaroids} />
+
+            <DailyReasons pool={reasonsPool} />
+
         </div>
     );
 }
