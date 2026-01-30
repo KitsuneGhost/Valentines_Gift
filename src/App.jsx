@@ -5,7 +5,8 @@ import MemoryVault from "./components/MemoryVault.jsx";
 import PolaroidGallery from "./components/PolaroidGallery.jsx";
 import DailyReasons from "./components/DailyReasons.jsx";
 import HeartbeatUnlock from "./components/HeartbeatUnlock.jsx";
-
+import Finale from "./components/Finale.jsx";
+import { timelineItems, forgetCards, promises } from "./data/finale";
 import { reasonsPool } from "./data/reasons";
 import { vaultChapters } from "./data/vault";
 import { virgoStars, virgoLinks, virgoSupportStars } from "./data/memories";
@@ -197,6 +198,8 @@ export default function App() {
             <DailyReasons pool={reasonsPool} />
 
             <HeartbeatUnlock />
+
+            <Finale timeline={timelineItems} forget={forgetCards} promises={promises} />
         </div>
     );
 }
