@@ -44,7 +44,7 @@ export default function DailyReasons({ pool = [] }) {
     return (
         <section className="reasonsSection">
             <h2 className="h2">Daily Reasons</h2>
-            <p className="muted">Ask for one reason. Save the ones you want to keep.</p>
+            <p className="muted">Reasons why I love you. Save the ones you want to keep.</p>
 
             <div className="reasonCard">
                 <div className={`reasonText ${current ? "show" : ""}`}>
