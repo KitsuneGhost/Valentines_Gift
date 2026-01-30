@@ -845,3 +845,59 @@ body{
   0%, 100% { transform: scale(1); opacity: 0.85; }
   50% { transform: scale(1.06); opacity: 1; }
 }
+
+/* HEART: make the icon actually beat */
+.heartBtn{
+  position: relative;
+  overflow: hidden;
+}
+
+/* subtle background pulse layer */
+.heartPulse{
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: radial-gradient(circle at 50% 40%, rgba(255, 160, 210, 0.38), transparent 58%);
+  opacity: 0.9;
+  animation: heartPulse 1.8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* THIS is the visible beat */
+.heartIcon{
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 48px;
+  line-height: 1;
+  color: rgba(180, 40, 110, 0.92);
+  transform: translateY(2px);
+  animation: heartBeat 1.8s ease-in-out infinite;
+  will-change: transform, filter;
+  pointer-events: none;
+}
+
+/* Faster beat while holding */
+.heartWrap.holding .heartPulse{
+  animation-duration: 0.95s;
+  opacity: 1;
+}
+.heartWrap.holding .heartIcon{
+  animation-duration: 0.95s;
+  filter: drop-shadow(0 0 18px rgba(255, 120, 180, 0.35));
+}
+
+/* A nicer beat curve than a simple scale */
+@keyframes heartBeat{
+  0%, 100% { transform: translateY(2px) scale(1); }
+  18% { transform: translateY(2px) scale(1.10); }
+  32% { transform: translateY(2px) scale(0.98); }
+  45% { transform: translateY(2px) scale(1.06); }
+  60% { transform: translateY(2px) scale(1); }
+}
+
+@keyframes heartPulse{
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
