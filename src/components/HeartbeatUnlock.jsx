@@ -127,9 +127,9 @@ export default function HeartbeatUnlock() {
                 <div className="heartMessage">
                     {unlocked ? (
                         <div className="heartCard">
-                            <div className="heartTitle">In sync.</div>
+                            <div className="heartTitle">My heart says...</div>
                             <div className="heartText">
-                                Even when everything is loud, you’re the rhythm I come back to.
+                                When everything is dark, you’re the sun that lights up the darkness❤️☀️.
                             </div>
                         </div>
                     ) : (

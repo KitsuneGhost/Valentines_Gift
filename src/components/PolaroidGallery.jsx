@@ -36,7 +36,7 @@ export default function PolaroidGallery({ items = [] }) {
     return (
         <section className="polaroidSection">
             <h2 className="h2">Polaroids</h2>
-            <p className="muted">Little snapshots with the meaning left inside.</p>
+            <p className="muted">Little snapshots with the meaning left inside💓</p>
 
             <div className="polaroidGrid">
                 {items.map((it, idx) => (

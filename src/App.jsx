@@ -100,8 +100,8 @@ export default function App() {
         <div className="page">
             <section ref={cosmicRef} className="cosmicSection">
                 <header className="hero">
-                    <h1>Happy Valentine's Day, mi Amor! ✨</h1>
-                    <h2>Your Constellation!</h2>
+                    <h1>Happy Valentine's Day, mi Amor! ✨❤️</h1>
+                    <h2>This is your Constellation! Inside each star is one memory I have about you from this year❤️</h2>
                     <p className="muted">Click a star. Each one is something I’ll never forget.</p>
                 </header>
 
@@ -181,13 +181,13 @@ export default function App() {
 
             <section className="letterSection">
                 <h2 className="h2">A letter</h2>
-                <p className="muted">I wrote this slowly. You should read it slowly.</p>
+                <p className="muted">I wrote this just for you! It's small, but i put my feelings into it</p>
 
                 <TypedLetter
                     speed={14}
                     linePause={420}
                     startDelay={450}
-                    text={`Ari,\n\nI wanted to build something that feels like you.\n\n— Tikhon`}
+                    text={`Ari,\n\nI wanted to build something that feels like you. So i made this website!\n\nEach section here contains my memories and feelings about us and the tme we spent together or apart!❤️❤️\n\n My world turned upside down (in a good way) when you came into my life and it can never go back!\n\n This is how much you mean to me and I will use this website\n\nto tell you how much I love you because words are not enough anymore❤️\n\nI hope you remember this Valentine's Day as one the best days you had❤️\n\n I love you a lot\n\n-Tikhon\n\n❤️`}
                 />
             </section>
 

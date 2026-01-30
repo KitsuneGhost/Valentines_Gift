@@ -50,8 +50,8 @@ export default function MemoryVault({ chapters = [] }) {
 
     return (
         <section className="vaultSection">
-            <h2 className="h2">Memory Vault</h2>
-            <p className="muted">Little chapters. No cringe passwords — just our words.</p>
+            <h2 className="h2">Memory Vaults</h2>
+            <p className="muted">Just some things about us💓</p>
 
             <div className="vaultGrid">
                 {chapters.map((c) => {
@@ -104,7 +104,7 @@ export default function MemoryVault({ chapters = [] }) {
             {allUnlocked && (
                 <div className="vaultFinal">
                     <div className="vaultFinalTitle">You found them all.</div>
-                    <div className="vaultFinalText">Okay. One more thing is hidden in the next section.</div>
+                    <div className="vaultFinalText">I LOVE YOU!!</div>
                 </div>
             )}
         </section>
