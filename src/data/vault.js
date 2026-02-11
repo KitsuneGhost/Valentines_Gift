@@ -2,7 +2,7 @@ export const vaultChapters = [
     {
         id: "chapter-1",
         title: "Vault I",
-        hint: "The nickname you love calling you the most",
+        hint: "The nickname you love me calling you the most",
         code: "mi_sol",
         content: `I call you like that because you are like a sunshine to me. Beaming with joy and warmth and giving me hope`,
     },
@@ -16,7 +16,7 @@ export const vaultChapters = [
     {
         id: "chapter-3",
         title: "Vault III",
-        hint: "The first gift i got you",
+        hint: "The first gift I got you",
         code: "Julius",
         content: `When I bought him for you i vowed to take care of you forever`,
     },
