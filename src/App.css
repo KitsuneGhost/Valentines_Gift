@@ -24,18 +24,16 @@ body{
   color: rgba(25, 10, 25, 0.92);
 }
 
-/* ---------- COSMIC SECTION (header + sky) ---------- */
 .cosmicSection {
   position: relative;
 
-  /* full-bleed */
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  /* IMPORTANT: don't use 100vw on the layout box (causes mobile shift) */
+  width: 100%;
+  margin-left: 0;
 
   padding: 28px 0 70px;
   isolation: isolate;
 
-  /* fade value set by JS */
   --cosmicFade: 0;
 }
 
@@ -49,7 +47,11 @@ body{
 .cosmicSection::before {
   content: "";
   position: absolute;
-  inset: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
   z-index: 1;
 
   background:
