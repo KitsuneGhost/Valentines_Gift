@@ -1102,3 +1102,57 @@ html, body {
 #root {
   overflow-x: hidden;
 }
+
+
+/* =========================
+   MOBILE / RESPONSIVE PATCH
+   ========================= */
+
+.hero h1 {
+  /* scales down nicely on phones */
+  font-size: clamp(26px, 6.2vw, 44px);
+  line-height: 1.1;
+}
+
+.hero h2 {
+  font-size: clamp(14px, 3.8vw, 20px);
+  line-height: 1.35;
+  margin: 0 auto;
+  max-width: 42ch;
+}
+
+.page {
+  /* less side padding on small screens */
+  padding: 0 14px 34px;
+}
+
+/* tablets + phones */
+@media (max-width: 768px) {
+  .sky {
+    width: min(94vw, 1100px);
+    height: min(62vh, 560px);
+    border-radius: 18px;
+  }
+
+  .modal {
+    width: min(560px, 96vw);
+    padding: 16px;
+  }
+
+  /* nicer tap targets */
+  button, a {
+    min-height: 44px;
+  }
+}
+
+/* small phones */
+@media (max-width: 420px) {
+  .sky {
+    height: min(56vh, 480px);
+    border-radius: 16px;
+  }
+
+  .page {
+    padding: 0 12px 30px;
+  }
+}
