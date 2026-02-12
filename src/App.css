@@ -1092,3 +1092,13 @@ body{
   margin-top: 4px;
   color: rgba(60,20,40,0.68);
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#root {
+  overflow-x: hidden;
+}
