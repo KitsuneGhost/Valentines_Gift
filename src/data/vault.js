@@ -9,7 +9,7 @@ export const vaultChapters = [
     {
         id: "chapter-2",
         title: "Vault II",
-        hint: "The place we had our first date",
+        hint: "The place we had our first date at",
         code: "Christmas_World",
         content: `Some places just become ours. Even if nobody else notices. Even if they exist only for 2 weeks each year`,
     },
